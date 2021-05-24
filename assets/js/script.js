@@ -28,6 +28,7 @@ var auditTask = function() {
 
 
 
+//Trying to sort out the colour change based on time of day:
 
     // $(".time-block").each(function(index) {
     //     console.log(index);
@@ -62,25 +63,20 @@ var auditTask = function() {
 
 
 
-
-
-
-
 // load current tasks UNFINISHED
 var loadTasks = function() {
     tasks = JSON.parse(localStorage.getItem("tasks"));
     //if nothing is there
     if (!tasks) {
         tasks = {}
-    }
-    taskEl.textContent = tasks;
-}
+    };
+};
 
 
 
 //add text to task
 $(".task").on("click", function() {
-    console.log("click!");
+    //console.log("click!");
     var text = $(this)
         .text()
         .trim();
