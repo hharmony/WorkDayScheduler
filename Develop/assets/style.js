@@ -1,41 +1,84 @@
-var taskEl = document.getElementsByClassName('task');
+var taskEl = document.getElementsByClassName('task')
+
 //empty array for inputted tasks
-var storedTasks = [];
+var tasks = [];
 
 //Current day
 var today = moment();
 var dateEl = document.getElementById('currentDay');
 currentDay.innerHTML = today.format("dddd, MMMM Do YYYY");
 
-//colour change based on hour
-var auditTask = function(taskEl) {
-    console.log(taskEl);
-  
-}
-var currentTime = moment().hour();
-console.log(currentTime)
+//colour change based on hour  UNFINISHED
+var auditTask = function() {
+    var currentTime = moment().hour();
+    $(".time-block").each(function(){
+        var blockHour = parseInt($(this).children(".task").attr("id"));
 
-// load current tasks
+        if (currentTime === blockHour) {
+            $(".task").addClass("present");
+        }
+        else if (currentTime < blockHour) {
+            $(".task").addClass("future");
+        }
+        else {
+            $(".task").addClass("past");
+        }
+        });
+};
+
+
+
+
+    // $(".time-block").each(function(index) {
+    //     console.log(index);
+    //     for (blockHour = ]; blockHour < 18; blockHour++) {
+    //         if (blockHour === currentTime) {
+    //             $(".task").addClass("present");
+    //         }
+    //     }
+    // });
+    // for(var blockHour = parseInt($(this).children(".task").attr("id")); blockHour < 18; blockHour++ ) {
+    //     }
+    //if time block > currenTime, addclass future
+    // var blockHour = $(".time-block").each(function(index){
+    //     console.log(blockHour)
+    // }
+    // });
+    /* for () {
+        if (blockHour > currentTime) {
+            $(".task").addClass("future");
+        }
+}*/
+// $(".time-block").each(function(){
+//     var blockHour = parseInt($(this).children(".task").attr("id"));
+//     // console.log(blockHour);
+//         if (currentTime === blockHour) {
+//             $(".task").addClass("present");
+//     }
+//     });
+// $(".time-block").each(function(index) {
+//     console.log(index)    
+// })
+
+
+
+
+
+
+
+// load current tasks UNFINISHED
 var loadTasks = function() {
     tasks = JSON.parse(localStorage.getItem("tasks"));
     //if nothing is there
     if (!tasks) {
         tasks = {}
     }
+    taskEl.textContent = tasks;
 }
-//add text to task
-//when task is clicked, do something
-// $(".task").click(function(){
-//     console.log("clicked")
-//     var text = $(this)
-//         .text()
-//         .trim()
-//     //create text area element
-//     var textInput = $("<textarea>")
-//     .addClass("form-control")
-//     .val(text);
-// })
 
+
+
+//add text to task
 $(".task").on("click", function() {
     console.log("click!");
     var text = $(this)
@@ -49,39 +92,32 @@ $(".task").on("click", function() {
     $(this).replaceWith(textInput);
     textInput.trigger("focus");
 });
-
-
-
 //blur event so textarea reverts back when something else is interacted with
 $(".task").on("blur", "textarea", function() {
     //get current value/text
     var text = $(this)
         .val()
         .trim();
-//
     var taskP = $("<p>")
-        .addClass("m-1")
+        .addClass("item")
         .text(text);
-
 //replace current p with inputted text
     $(this).replaceWith(taskP);
 
-/*   var status = $(this)
-        .closest(".task")
-        .attr("id")
-        .replace("task", "");
-
-    var index = $(this)
-    .closest(".task")
-    .index();*/
 });
 
 
-
-//save task
-var saveTask = function() {
+//save task on button click
+$(".saveBtn").on("click", function() { 
+    var index = $(".saveBtn").index(this);
+    tasks[index] = $(this).parent().find(".item").text();
     localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+});
+
+//save to local storage
+var saveTask = function(){
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+};
 
 
 loadTasks();
